@@ -1,0 +1,11 @@
+<div *ngIf="!isLoggedIn; else logoutButton">
+  <form (ngSubmit)="onSubmit()">
+    <input type="email" placeholder="Email" [(ngModel)]="loginData.email" name="email" required>
+    <input type="password" placeholder="Password" [(ngModel)]="loginData.password" name="password" required>
+    <button type="submit">Log In</button>
+  </form>
+</div>
+
+<ng-template #logoutButton>
+  <button (click)="onLogout()">Log Out</button>
+</ng-template>

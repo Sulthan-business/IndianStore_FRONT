@@ -1,0 +1,21 @@
+<h1>My Profile</h1>
+<hr>
+
+<div *ngIf="isLoggedIn; else notLoggedIn">
+  
+  <h2>Welcome Back!</h2>
+  <p>You are currently logged in. Here you could manage your orders, shipping details, and account preferences.</p>
+  
+  <p>Status: <strong style="color: green;">Active</strong></p>
+  
+  <button (click)="logout()" style="background-color: #e63946;">Log Out</button>
+
+</div>
+
+<ng-template #notLoggedIn>
+  <h2>Account Access</h2>
+  <p>You are currently logged out. Please use the login controls in the header to sign in.</p>
+  <p>If you need to checkout, you must be logged in first.</p>
+  
+  <button routerLink="/products">Continue Shopping</button>
+</ng-template>

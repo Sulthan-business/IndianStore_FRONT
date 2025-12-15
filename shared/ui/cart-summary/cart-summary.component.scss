@@ -1,0 +1,14 @@
+.cart-summary-btn {
+    /* Override default button styles for a compact look */
+    background-color: #e63946 !important; /* Red accent for cart */
+    color: white !important;
+    padding: 8px 15px !important;
+    border-radius: 20px !important;
+    margin-left: 20px !important;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.item-count {
+    font-weight: 900;
+}

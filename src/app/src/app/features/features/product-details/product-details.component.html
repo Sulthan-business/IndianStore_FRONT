@@ -1,0 +1,14 @@
+<div *ngIf="product; else productNotFound">
+  <h1>{{ product.name }}</h1>
+  <hr>
+  <h2>${{ product.price.toFixed(2) }}</h2>
+  <p><strong>Category:</strong> {{ product.category }}</p>
+  <p>{{ product.description }}</p>
+
+  <button routerLink="/cart">Add to Cart</button>
+  <button routerLink="/products">Back to Shop</button>
+</div>
+
+<ng-template #productNotFound>
+  <p>Sorry, the requested product was not found.</p>
+</ng-template>

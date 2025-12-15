@@ -1,0 +1,51 @@
+<h1>🛍️ Your Shopping Cart</h1>
+<hr>
+
+<div *ngIf="cartItems$ | async as cartItems">
+
+  <div *ngIf="cartItems.length === 0; else cartContent">
+    <p>Your cart is empty. Time to find some fun toys!</p>
+    <button routerLink="/products">Continue Shopping</button>
+  </div>
+
+  <ng-template #cartContent>
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Quantity</th>
+          <th>Subtotal</th>
+          <th>Remove</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of cartItems; trackBy: trackByFn"> 
+          <td>{{ item.product.name }}</td>
+          <td>${{ item.product.price.toFixed(2) }}</td>
+          
+          <td>
+            <input 
+              type="number" 
+              [value]="item.quantity" 
+              min="1"
+              (change)="onQuantityChange(item.product.id, $event)"
+              style="width: 50px;"
+            >
+          </td>
+          
+          <td>${{ (item.product.price * item.quantity).toFixed(2) }}</td>
+          
+          <td>
+            <button (click)="removeItem(item.product.id)">Remove</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <hr>
+    
+    <button routerLink="/products">Continue Shopping</button>
+    <button routerLink="/checkout">Proceed to Checkout</button>
+  </ng-template>
+</div>
