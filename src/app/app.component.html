@@ -12,12 +12,20 @@
     </nav>
 
     <div class="action-icons">
-      <a routerLink="/profile" class="icon-btn">
-        <span class="icon">👤</span>
-      </a>
+      @if (authService.isLoggedIn()) {
+        <a routerLink="/profile" class="icon-btn" title="My Profile">
+          <span class="icon">👤</span>
+        </a>
+        <button (click)="logout()" class="logout-minimal-btn" title="Logout">
+          <span class="icon">🚪</span>
+        </button>
+      } @else {
+        <a routerLink="/login" class="login-link">Login</a>
+      }
+
       <a routerLink="/cart" class="cart-btn">
         <span class="icon">🛒</span>
-        <span class="cart-count">0</span>
+        <span class="cart-count">{{ cartCount }}</span>
       </a>
     </div>
   </div>
@@ -37,7 +45,7 @@
       <h3>Quick Links</h3>
       <ul>
         <li><a routerLink="/products">New Arrivals</a></li>
-        <li><a routerLink="/profile">My Account</a></li>
+        <li><a [routerLink]="authService.isLoggedIn() ? '/profile' : '/login'">My Account</a></li>
         <li><a routerLink="/checkout">Shipping Info</a></li>
       </ul>
     </div>
