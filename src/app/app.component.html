@@ -1,20 +1,48 @@
-<header>
-  <div class="logo-container">
-    <img src="assets/images/balya-logo.png" alt="Balya World Logo" class="header-logo">
-    <h1>Balya World</h1> 
-  </div>
+<header class="main-nav">
+  <div class="nav-container">
+    <div class="logo-area" routerLink="/home">
+      <img src="assets/images/balya-logo.png" alt="Balya World" class="logo-img">
+      <span class="brand-name">Balya <span class="accent">World</span></span>
+    </div>
 
-  <nav>
-    <button routerLink="/products">Shop</button>
-    <button routerLink="/checkout">Checkout</button>
-    <button routerLink="/profile">Profile</button>
-  </nav>
-  
-  <app-login-form></app-login-form>
-  
-  <app-cart-summary></app-cart-summary> 
+    <nav class="links">
+      <a routerLink="/home" routerLinkActive="active-link">Home</a>
+      <a routerLink="/products" routerLinkActive="active-link">Shop</a>
+      <a routerLink="/search" routerLinkActive="active-link">Search</a>
+    </nav>
+
+    <div class="action-icons">
+      <a routerLink="/profile" class="icon-btn">
+        <span class="icon">👤</span>
+      </a>
+      <a routerLink="/cart" class="cart-btn">
+        <span class="icon">🛒</span>
+        <span class="cart-count">0</span>
+      </a>
+    </div>
+  </div>
 </header>
 
-<main>
+<main class="page-wrapper">
   <router-outlet></router-outlet>
 </main>
+
+<footer class="main-footer">
+  <div class="footer-content">
+    <div class="footer-section">
+      <h3>Balya World</h3>
+      <p>Nurturing the journey of motherhood with safe and gentle products.</p>
+    </div>
+    <div class="footer-section">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a routerLink="/products">New Arrivals</a></li>
+        <li><a routerLink="/profile">My Account</a></li>
+        <li><a routerLink="/checkout">Shipping Info</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Balya World. Designed for Mommies & Babies.</p>
+  </div>
+</footer>

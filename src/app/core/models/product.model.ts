@@ -1,12 +1,15 @@
 export interface Product {
 }
 export interface Product {
-  id: number;
+  id: string;
   name: string;
-  category: 'Toy' | 'Clothing' | 'Book';
-  price: number;
   description: string;
-  imageUrl: string; // URL for the product image
+  price: number;
+  imageUrl: string;
+  category: string;
+  stockStatus: 'In Stock' | 'Out of Stock';
+  shippingDays: number;      // Essential for Dropshipping
+  supplierLocation: string;  // e.g., 'Warehouse A' or 'International'
 }
 export interface CartItem {
   product: Product;

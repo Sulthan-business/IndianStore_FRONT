@@ -1,23 +1,11 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-// Keep RouterOutlet in the import list from @angular/router
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router'; 
-import { LoginFormComponent } from "./shared/shared/ui/login-form/login-form.component";
-import { CartSummaryComponent } from './shared/ui/cart-summary/cart-summary.component';
+import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [
-    CommonModule, 
-    RouterLink, 
-    RouterOutlet, // 👈 CRITICAL FIX: Include RouterOutlet here
-    LoginFormComponent,
-    CartSummaryComponent
-  ],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss' // This must match your file name
 })
-export class AppComponent {
-  title = 'drop_front';
-}
+export class AppComponent {}

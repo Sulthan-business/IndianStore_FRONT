@@ -1,0 +1,94 @@
+.main-nav {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  border-bottom: 1px solid #ffe9e3;
+  
+  padding: 10px 0; // Tighter padding for a modern look
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+
+  .nav-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  
+  .logo-img { height: 45px; }
+  .brand-name {
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: #5d5d5d;
+    .accent { color: #ff9a8b; }
+  }
+}
+
+.links {
+  display: flex;
+  gap: 30px;
+  
+  a {
+    text-decoration: none;
+    color: #888;
+    font-weight: 500;
+    transition: 0.3s;
+    &:hover, &.active-link { color: #ff9a8b; }
+  }
+}
+
+.action-icons {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+
+  .cart-btn {
+    background: #ff9a8b;
+    color: white;
+    padding: 8px 18px;
+    border-radius: 20px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 10px rgba(255, 154, 139, 0.3);
+  }
+}
+
+.page-wrapper {
+  min-height: 80vh; // Ensures footer stays at bottom on short pages
+}
+
+.main-footer {
+  background: #fdf2f0;
+  padding: 60px 20px 20px;
+  margin-top: 50px;
+  border-radius: 50px 50px 0 0;
+
+  .footer-content {
+    display: flex;
+    justify-content: space-around;
+    max-width: 1200px;
+    margin: 0 auto;
+    flex-wrap: wrap;
+    gap: 40px;
+  }
+
+  .footer-bottom {
+    text-align: center;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+    font-size: 0.8rem;
+    color: #aaa;
+  }
+}

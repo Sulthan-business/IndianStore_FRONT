@@ -1,59 +1,29 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/auth.guard';
 
 export const routes: Routes = [
-  // 1. Default Route: Redirect empty path to 'products' (Home)
-  {
-    path: '',
-    redirectTo: 'products',
-    pathMatch: 'full'
-  },
-
-  // 2. Shop Routes (Lazy Loaded)
-  {
-    path: 'products',
-    loadComponent: () =>
-    import('./features/features/product-catalog/product-catalog.component')
-        .then(m => m.ProductCatalogComponent)
-  },
-  
-  {
-    path: 'products/:id',
-    loadComponent: () =>
-     import('./features/features/product-details/product-details.component')
-        .then(m => m.ProductDetailsComponent)
-  },
-
-  {
-    path: 'cart',
-    loadComponent: () =>
-    import('./features/features/cart/cart.component')
-        .then(m => m.CartComponent)
-  },
-  {
-    path: 'checkout',
-    canActivate: [authGuard], // Protected route
-    loadComponent: () =>
-      import('./features/features/checkout/checkout.component')
-        .then(m => m.CheckoutComponent)
-  },
-
-  // 3. Admin/User Routes (Optional - kept if you still need them)
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { 
-    path: 'dashboard', 
-    loadComponent: () => import('./features/dashboard/dashboard.component')
-      .then(m => m.DashboardComponent) 
+    path: 'home', 
+    loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent) 
   },
- 
-{
-    // 👈 NEW ROUTE FOR PROFILE
-    path: 'profile',
-    loadComponent: () => import('./features/profile/profile.component').then(m => m.ProfileComponent)
+  { 
+    path: 'products', 
+    loadComponent: () => import('./features/product-catalog/product-catalog.component').then(m => m.ProductCatalogComponent) 
   },
-  // 4. Wildcard: ALWAYS LAST
-  // Redirect unknown paths to 'products' (or 'dashboard' if you prefer)
-  {
-    path: '**',
-    redirectTo: 'products'
+  { 
+    path: 'product/:id', 
+    loadComponent: () => import('./features/product-details/product-details.component').then(m => m.ProductDetailsComponent) 
+  },
+  { 
+    path: 'cart', 
+    loadComponent: () => import('./features/cart/cart.component').then(m => m.CartComponent) 
+  },
+  { 
+    path: 'checkout', 
+    loadComponent: () => import('./features/checkout/checkout.component').then(m => m.CheckoutComponent) 
+  },
+  { 
+    path: 'search', 
+    loadComponent: () => import('./features/search/search.component').then(m => m.SearchComponent) 
   }
 ];
