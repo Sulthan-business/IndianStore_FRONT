@@ -1,21 +1,31 @@
 import { Routes } from '@angular/router';
-import { authGuard } from './core/auth.guard'; // Import the guard
+import { authGuard } from './core/auth.guard';
+
 export const routes: Routes = [
-  
-  // Existing Routes
   { path: '', redirectTo: 'home', pathMatch: 'full' },
   { 
     path: 'home', 
     loadComponent: () => import('./features/home/home.component').then(m => m.HomeComponent) 
   },
-  // PROTECTED ROUTES
+  
+  // Update: Using 'products' to match your Header routerLink
+  { 
+    path: 'products', 
+    loadComponent: () => import('./features/product-catalog/product-catalog.component').then(m => m.ProductCatalogComponent)
+  },
+  // REMOVE canActivate here so anyone can see details
+  { 
+    path: 'products/:id', 
+    loadComponent: () => import('./features/product-details/product-details.component').then(m => m.ProductDetailsComponent)
+  },
+  // Protected Routes
   { 
     path: 'checkout', 
     canActivate: [authGuard], 
     loadComponent: () => import('./features/checkout/checkout.component').then(m => m.CheckoutComponent) 
   },
   { 
-    path: 'dashboard', 
+   path: 'dashboard', 
     canActivate: [authGuard], 
     loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent)
   },
@@ -24,7 +34,8 @@ export const routes: Routes = [
     canActivate: [authGuard], 
     loadComponent: () => import('./features/profile/profile.component').then(m => m.ProfileComponent) 
   },
-  // New Authentication Routes (Lazy Loaded)
+
+  // Authentication
   { 
     path: 'login', 
     loadComponent: () => import('./features/auth/login/login.component').then(m => m.LoginComponent) 
@@ -32,9 +43,5 @@ export const routes: Routes = [
   { 
     path: 'register', 
     loadComponent: () => import('./features/auth/register/register.component').then(m => m.RegisterComponent) 
-  },
-  { 
-    path: 'dashboard', 
-    loadComponent: () => import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent)
   }
 ];

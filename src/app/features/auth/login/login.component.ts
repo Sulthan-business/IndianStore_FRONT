@@ -30,7 +30,8 @@ export class LoginComponent {
     this.authService.login(this.loginData).subscribe({
       next: (res) => {
         this.loading.set(false);
-        this.router.navigate(['/dashboard']);
+        // Change '/dashboard' to '/home' or '/products' for a better shopping flow
+        this.router.navigate(['/home']); 
       },
       error: (err) => {
         this.loading.set(false);

@@ -1,0 +1,28 @@
+<div class="container">
+  <h2>Featured Collection</h2>
+
+  @if (isLoading()) {
+    <div class="spinner">Exploring the best products for you...</div>
+  } @else {
+    <div class="product-grid">
+      @for (product of allProducts(); track product.id) {
+        <div class="product-card">
+          <img [src]="product.image ? product.image : 'assets/images/placeholder.png'" 
+               [alt]="product.name" 
+               loading="lazy" 
+               class="product-img">
+               
+          <div class="card-content">
+            <h3>{{ product.name }}</h3>
+            <p class="price">{{ product.price | currency:'INR' }}</p>
+            <p class="stock-label">Only {{ product.stock }} left in stock</p>
+            
+            <button [routerLink]="['/products', product.id]">View Details</button>
+          </div>
+        </div>
+      } @empty {
+        <p class="spinner">No products available at the moment.</p>
+      }
+    </div>
+  }
+</div>

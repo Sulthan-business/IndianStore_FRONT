@@ -1,43 +1,33 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '@env/environment';
+import { Product, ProductResponse } from './models/product.model';
+import { tap } from 'rxjs';
 
-import { Product } from './models/product.model';
-
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class ProductDataService {
-  private mockProducts: Product[] = [
-    {
-      id: 1,
-      name: 'Rainbow Block Set',
-      category: 'Toy',
-      price: 24.99,
-      description: 'Bright wooden blocks for creative building.',
-      imageUrl: 'rainbow.jpg'
-    },
-    {
-      id: 2,
-      name: 'Dinosaur T-Shirt',
-      category: 'Clothing',
-      price: 15.50,
-      description: 'Soft cotton tee with a fun T-Rex graphic.',
-      imageUrl: 'dino.jpg'
-    },
-    {
-      id: 3,
-      name: 'Adventure Story Book',
-      category: 'Book',
-      price: 9.99,
-      description: 'A beautifully illustrated tale of space exploration.',
-      imageUrl: 'book.jpg'
-    }
-  ];
+  private http = inject(HttpClient);
+  private readonly BASE_URL = `${environment.apiUrl}/products`;
 
-  getProducts(): Product[] {
-    return this.mockProducts;   // FIXED
+  products = signal<Product[]>([]);
+  loading = signal<boolean>(false);
+
+  getProducts() {
+    // Performance Optimization: Don't show loading if we already have data
+    if (this.products().length === 0) {
+      this.loading.set(true);
+    }
+
+    return this.http.get<ProductResponse>(`${this.BASE_URL}/`).pipe(
+      tap(res => {
+        this.products.set(res.results);
+        this.loading.set(false);
+      })
+    );
   }
 
-  getProductById(id: number): Product | undefined {
-    return this.mockProducts.find(p => p.id === id);
+  // GET /api/products/{id}/
+  getProductById(id: string | number) {
+    return this.http.get<Product>(`${this.BASE_URL}/${id}/`);
   }
 }

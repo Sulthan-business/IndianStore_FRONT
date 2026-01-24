@@ -1,17 +1,15 @@
 export interface Product {
-}
-export interface Product {
-  id: string;
+  id: number;
   name: string;
-  description: string;
-  price: number;
-  imageUrl: string;
-  category: string;
-  stockStatus: 'In Stock' | 'Out of Stock';
-  shippingDays: number;      // Essential for Dropshipping
-  supplierLocation: string;  // e.g., 'Warehouse A' or 'International'
+  price: string;
+  stock: number;
+  cod_allowed: boolean;
+  image: string;
+  description: string; // Now required for the details page
 }
-export interface CartItem {
-  product: Product;
-  quantity: number;
+export interface ProductResponse {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: Product[];
 }

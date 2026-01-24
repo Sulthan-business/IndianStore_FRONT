@@ -1,0 +1,38 @@
+@if (product()) {
+  <div class="page-wrapper">
+    <div class="details-container">
+      
+      <div class="image-section">
+        <div class="image-card">
+          <img [src]="product()?.image ? product()?.image : 'assets/images/placeholder.png'" 
+               [alt]="product()?.name">
+        </div>
+      </div>
+
+      <div class="info-section">
+        <nav class="breadcrumb">
+          <a routerLink="/products">Products</a> / <span>{{ product()?.name }}</span>
+        </nav>
+
+        <h1 class="product-title">{{ product()?.name }}</h1>
+        
+        <div class="price-tag">
+          <span class="amount">{{ product()?.price | currency:'INR' }}</span>
+          @if (product()?.cod_allowed) {
+            <span class="cod-badge">COD Available</span>
+          }
+        </div>
+
+        <div class="description-box">
+          <h3>Technical Description</h3>
+          <p>{{ product()?.description }}</p>
+        </div>
+
+        <div class="action-area">
+          <button class="add-to-cart">Add to Cart</button>
+          <button class="buy-now">Buy Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
