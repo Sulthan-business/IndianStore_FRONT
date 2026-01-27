@@ -23,10 +23,10 @@
         <a routerLink="/login" class="login-link">Login</a>
       }
 
-      <a routerLink="/cart" class="cart-btn">
-        <span class="icon">🛒</span>
-        <span class="cart-count">{{ cartCount }}</span>
-      </a>
+   <a routerLink="/cart" class="cart-btn">
+  <span class="icon">🛒</span>
+  <span class="badge">{{ cartService.totalItems() }}</span>
+</a>
     </div>
   </div>
 </header>

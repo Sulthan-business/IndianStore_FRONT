@@ -1,62 +1,66 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { CartItem, Product } from './models/product.model';
+import { Injectable, inject, signal, computed } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment';
+import { Observable, tap } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable({ providedIn: 'root' })
 export class CartService {
-  private cartItemsSubject = new BehaviorSubject<CartItem[]>([]);
+  private http = inject(HttpClient);
+  private apiUrl = `${environment.apiUrl}/cart`; 
+
+  // Master Signal for high-speed state management
+  private cartItemsSignal = signal<any[]>([]);
   
-  // Publicly exposed Observable for components to subscribe to
-  cartItems$: Observable<CartItem[]> = this.cartItemsSubject.asObservable();
+  // Publicly exposed signals for components
+  items = this.cartItemsSignal.asReadonly();
+  // Ensure these exist in your CartService class
+addToCart(productId: number, quantity: number = 1): Observable<any> {
+  const payload = { product: productId, quantity };
+  return this.http.post<any>(`${this.apiUrl}/`, payload).pipe(
+    tap(() => this.getCartItems()) // Update signals after adding
+  );
+}
+  // Computed Signals: Recalculate instantly on the frontend
+  totalItems = computed(() => this.cartItemsSignal().reduce((acc, item) => acc + item.quantity, 0));
+  totalPrice = computed(() => this.cartItemsSignal().reduce((acc, item) => acc + (item.price * item.quantity), 0));
 
-  // 1. Private Getter (Fixes TS2339)
-  private get currentCart(): CartItem[] {
-    return this.cartItemsSubject.getValue();
+  // 1. Get Items: Handles DRF pagination results
+  getCartItems() {
+    this.http.get<any>(`${this.apiUrl}/`).subscribe({
+      next: (response) => {
+        this.cartItemsSignal.set(response.results || []);
+      },
+      error: (err) => console.error('Failed to load cart items', err)
+    });
   }
 
-  constructor() { }
+  // 2. Optimistic Update: Change UI instantly, then sync with Django
+  updateQuantity(cartItemId: number, newQuantity: number): Observable<any> {
+    const previousItems = this.cartItemsSignal();
 
-  addToCart(product: Product, quantity: number = 1) {
-    const currentItems = this.currentCart;
-    const existingItem = currentItems.find(item => item.product.id === product.id);
+    // Instant UI update logic
+    this.cartItemsSignal.update(items => 
+      items.map(item => item.id === cartItemId ? { ...item, quantity: newQuantity } : item)
+    );
 
-    if (existingItem) {
-      existingItem.quantity += quantity;
-    } else {
-      currentItems.push({ product, quantity });
-    }
-
-    this.cartItemsSubject.next(currentItems);
+    return this.http.patch<any>(`${this.apiUrl}/${cartItemId}/`, { quantity: newQuantity }).pipe(
+      tap({
+        error: () => this.cartItemsSignal.set(previousItems) // Rollback if API fails
+      })
+    );
   }
 
-  // 2. Remove Method (Fixes TS7006 implicit any/TS2339 currentCart)
-  removeFromCart(productId: number) {
-    const updatedItems = this.currentCart.filter((item: CartItem) => item.product.id !== productId);
-    this.cartItemsSubject.next(updatedItems);
-  }
+  // 3. Instant Removal
+  removeItem(cartItemId: number): Observable<any> {
+    const previousItems = this.cartItemsSignal();
 
-  // 3. Update Quantity Method (Fixes TS7006 implicit any/TS2339 currentCart)
-  updateQuantity(productId: number, quantity: number) {
-    const currentItems = this.currentCart;
-    const itemToUpdate = currentItems.find((item: CartItem) => item.product.id === productId);
+    // Remove from UI immediately
+    this.cartItemsSignal.update(items => items.filter(item => item.id !== cartItemId));
 
-    if (itemToUpdate) {
-      if (quantity <= 0) {
-        this.removeFromCart(productId);
-        return;
-      }
-      itemToUpdate.quantity = quantity;
-      this.cartItemsSubject.next(currentItems);
-    }
-  }
-  getTotalPrice(): number {
-    return this.currentCart.reduce((total, item) => {
-      return total + (item.product.price * item.quantity);
-    }, 0);
-  }
-  clearCart() {
-    this.cartItemsSubject.next([]);
+    return this.http.delete<any>(`${this.apiUrl}/${cartItemId}/`).pipe(
+      tap({
+        error: () => this.cartItemsSignal.set(previousItems) // Rollback if API fails
+      })
+    );
   }
 }

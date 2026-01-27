@@ -28,10 +28,10 @@
           <p>{{ product()?.description }}</p>
         </div>
 
-        <div class="action-area">
-          <button class="add-to-cart">Add to Cart</button>
-          <button class="buy-now">Buy Now</button>
-        </div>
+      <div class="action-area">
+  <button class="add-to-cart" (click)="handleAddToCart()">Add to Cart</button>
+  <button class="buy-now" (click)="buyNow()">Buy Now</button>
+</div>
       </div>
     </div>
   </div>

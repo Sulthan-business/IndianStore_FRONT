@@ -27,11 +27,14 @@ export class AuthService {
 
   // POST /api/users/refresh/
   refreshToken() {
-    const refresh = localStorage.getItem('refresh');
-    return this.http.post(`${this.BASE_URL}/refresh/`, { refresh }).pipe(
-      tap((res: any) => localStorage.setItem('access', res.access))
-    );
-  }
+  const refresh = localStorage.getItem('refresh');
+  return this.http.post(`${this.BASE_URL}/refresh/`, { refresh }).pipe(
+    tap((res: any) => {
+      localStorage.setItem('access', res.access); // Save the new key
+      this.isLoggedIn.set(true); 
+    })
+  );
+}
 
   private setSession(res: any) {
     localStorage.setItem('access', res.access);

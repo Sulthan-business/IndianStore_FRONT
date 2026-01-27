@@ -1,0 +1,22 @@
+<div class="checkout-container">
+  <h2>Checkout</h2>
+
+  <div class="checkout-grid">
+    <div class="order-summary">
+      <h3>Order Summary</h3>
+      <p>Total Items: {{ cartService.totalItems() }}</p>
+      <p>Total Amount: <strong>{{ cartService.totalPrice() | currency:'INR' }}</strong></p>
+    </div>
+
+    <form (ngSubmit)="placeOrder()" class="shipping-form">
+      <h3>Shipping Information</h3>
+      <input [(ngModel)]="shippingDetails.full_name" name="name" placeholder="Full Name" required>
+      <input [(ngModel)]="shippingDetails.address" name="address" placeholder="Shipping Address" required>
+      <input [(ngModel)]="shippingDetails.phone" name="phone" placeholder="Phone Number" required>
+      
+      <button type="submit" [disabled]="cartService.totalItems() === 0">
+        Confirm Order
+      </button>
+    </form>
+  </div>
+</div>

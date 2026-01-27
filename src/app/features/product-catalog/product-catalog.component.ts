@@ -2,6 +2,8 @@ import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/cor
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ProductDataService } from '../../core/product-data.service';
+import { Product } from 'src/app/core/models/product.model';
+import { CartService } from 'src/app/core/cart.service';
 
 @Component({
   selector: 'app-product-catalog',
@@ -13,15 +15,24 @@ import { ProductDataService } from '../../core/product-data.service';
   changeDetection: ChangeDetectionStrategy.OnPush 
 })
 export class ProductCatalogComponent implements OnInit {
-  // Use protected so the template can see it, but other components cannot
   protected productService = inject(ProductDataService);
+  private cartService = inject(CartService); // <--- Add this!
 
-  // Directly link to signals for O(1) change detection speed
   allProducts = this.productService.products;
   isLoading = this.productService.loading;
 
   ngOnInit(): void {
-    // Single-shot execution to hydrate the signal
     this.productService.getProducts().subscribe();
+  }
+
+  addToCart(product: Product) {
+    // We use product.id here based on your Product model
+    this.cartService.addToCart(product.id).subscribe({
+      next: () => {
+        console.log('Product added successfully');
+        // You could use a snackbar here instead of a hard alert
+      },
+      error: (err) => console.error('Error adding to cart:', err)
+    });
   }
 }
