@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/auth.guard';
 import { OrderTrackingComponent } from './features/order-tracking/order-tracking.component';
+import { MyOrdersComponent } from './features/my-orders/my-orders.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -25,6 +26,7 @@ export const routes: Routes = [
     canActivate: [authGuard], 
     loadComponent: () => import('./features/checkout/checkout.component').then(m => m.CheckoutComponent) 
   },
+ { path: 'my-orders', component: MyOrdersComponent  ,canActivate: [authGuard]},
   { path: 'track-order/:id', component: OrderTrackingComponent },
   { 
    path: 'dashboard', 

@@ -13,6 +13,9 @@
 
     <div class="action-icons">
       @if (authService.isLoggedIn()) {
+        <a routerLink="/my-orders" class="icon-btn" title="My Orders">
+          <span class="icon">📦</span>
+        </a>
         <a routerLink="/profile" class="icon-btn" title="My Profile">
           <span class="icon">👤</span>
         </a>
@@ -23,11 +26,10 @@
         <a routerLink="/login" class="login-link">Login</a>
       }
 
-   <a routerLink="/cart" class="cart-btn">
-  <span class="icon">🛒</span>
-  <span class="badge">{{ cartService.totalItems() }}</span>
-</a>
-
+      <a routerLink="/cart" class="cart-btn">
+        <span class="icon">🛒</span>
+        <span class="badge">{{ cartService.totalItems() }}</span>
+      </a>
     </div>
   </div>
 </header>
@@ -42,15 +44,26 @@
       <h3>Balya World</h3>
       <p>Nurturing the journey of motherhood with safe and gentle products.</p>
     </div>
+
     <div class="footer-section">
       <h3>Quick Links</h3>
       <ul>
         <li><a routerLink="/products">New Arrivals</a></li>
+        @if (authService.isLoggedIn()) {
+          <li><a routerLink="/my-orders">Track My Orders</a></li>
+        }
         <li><a [routerLink]="authService.isLoggedIn() ? '/profile' : '/login'">My Account</a></li>
         <li><a routerLink="/checkout">Shipping Info</a></li>
       </ul>
     </div>
+    
+    <div class="footer-section">
+      <h3>Contact Us</h3>
+      <p>Email: supportalyaworld.com</p>
+      <p>Kerala, India</p>
+    </div>
   </div>
+
   <div class="footer-bottom">
     <p>&copy; 2026 Balya World. Designed for Mommies & Babies.</p>
   </div>

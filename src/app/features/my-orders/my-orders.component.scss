@@ -1,0 +1,75 @@
+.orders-page-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 40px;
+    h1 { color: #5d5d5d; font-size: 2rem; margin-bottom: 10px; }
+    p { color: #888; }
+  }
+}
+
+.orders-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+}
+
+.order-card {
+  background: white;
+  border-radius: 20px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+  border: 1px solid #fdf2f0;
+  transition: transform 0.3s;
+
+  &:hover { transform: translateY(-5px); }
+
+  .card-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    border-bottom: 1px dashed #eee;
+    padding-bottom: 15px;
+    .order-number { font-weight: 700; color: #ff9a8b; }
+    .order-date { font-size: 0.85rem; color: #aaa; }
+  }
+
+  .card-mid {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    .info-group {
+      label { display: block; font-size: 0.75rem; color: #aaa; margin-bottom: 5px; }
+      .price { font-weight: 600; color: #5d5d5d; }
+    }
+  }
+
+  .btn-track {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    background: #ff9a8b;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+    &:hover { background: #ff6b6b; box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3); }
+  }
+}
+
+// Status Badges
+.status-badge {
+  font-size: 0.8rem;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+  
+  &[data-status="FULFILLED"] { background: #e8f5e9; color: #2e7d32; }
+  &[data-status="SHIPPED"] { background: #e3f2fd; color: #1565c0; }
+  &[data-status="PLACED"] { background: #fff3e0; color: #ef6c00; }
+  &[data-status="CANCELLED"] { background: #ffebee; color: #c62828; }
+}

@@ -1,44 +1,65 @@
-<div class="tracking-wrapper">
-  <h2>Order Tracking #{{ orderId }}</h2>
+<div class="tracking-container">
+  <div class="glass-card" *ngIf="fulfillmentData(); else loading">
+    <div class="header">
+      <h2>Track Your Happiness</h2>
+      <p class="order-no">Order #{{ orderId }}</p>
+    </div>
 
-  <div class="status-card" *ngIf="fulfillmentData(); else loading">
-    <div class="progress-track">
-      <div class="step" [class.active]="true">
-        <span class="dot"></span>
-        <p>Order Placed</p>
+    <div class="stepper">
+      <div class="step" [class.completed]="true">
+        <div class="circle"><i class="icon">✔</i></div>
+        <span>Placed</span>
+        <div class="line"></div>
       </div>
-      <div class="step" [class.active]="fulfillmentData().status !== 'CREATED'">
-        <span class="dot"></span>
-        <p>Processed</p>
+      
+      <div class="step" [class.completed]="['ACCEPTED', 'SHIPPED', 'DELIVERED'].includes(fulfillmentData().status)">
+        <div class="circle"><i class="icon">⚙</i></div>
+        <span>Processing</span>
+        <div class="line"></div>
       </div>
-      <div class="step" [class.active]="fulfillmentData().status === 'SHIPPED'">
-        <span class="dot"></span>
-        <p>Shipped</p>
+
+      <div class="step" 
+           [class.completed]="['SHIPPED', 'DELIVERED'].includes(fulfillmentData().status)"
+           [class.running]="fulfillmentData().status === 'SHIPPED'">
+        <div class="circle"><i class="icon">🚚</i></div>
+        <span>Shipped</span>
+        <div class="line"></div>
+      </div>
+
+      <div class="step" [class.completed]="fulfillmentData().status === 'DELIVERED'">
+        <div class="circle"><i class="icon">🎁</i></div>
+        <span>Delivered</span>
       </div>
     </div>
 
-    <hr>
-
-    <div class="details-section" *ngIf="fulfillmentData().status === 'SHIPPED'; else processingMsg">
-      <div class="info-row">
-        <span>Carrier:</span>
-        <strong>{{ fulfillmentData().carrier }}</strong>
+    <div class="details-pane" *ngIf="fulfillmentData().status === 'SHIPPED' || fulfillmentData().status === 'DELIVERED'">
+      <div class="tracking-info">
+        <div class="info-box">
+          <small>Courier Partner</small>
+          <strong>{{ fulfillmentData().carrier || 'Searching...' }}</strong>
+        </div>
+        <div class="info-box">
+          <small>Tracking ID</small>
+          <strong>{{ fulfillmentData().tracking_no || 'Pending' }}</strong>
+        </div>
       </div>
-      <div class="info-row">
-        <span>Tracking Number:</span>
-        <strong>{{ fulfillmentData().tracking_no }}</strong>
-      </div>
-      <a [href]="fulfillmentData().tracking_url" target="_blank" class="track-link">
-        Track on Official Website
+      
+      <a *ngIf="fulfillmentData().tracking_url" [href]="fulfillmentData().tracking_url" target="_blank" class="live-btn">
+        Live Tracking Link
       </a>
     </div>
 
-    <ng-template #processingMsg>
-      <p class="wait-msg">Your order is being prepared by our supplier. Please check back soon!</p>
-    </ng-template>
+    <div class="status-msg" *ngIf="fulfillmentData().status !== 'DELIVERED'">
+      <p>Status: <span>{{ fulfillmentData().status }}</span></p>
+    </div>
   </div>
 
   <ng-template #loading>
-    <div class="loader">Fetching tracking details...</div>
+    <div class="delivery-loader">
+      <div class="road">
+        <div class="truck">🚚</div>
+      </div>
+      <p>Locating your package in the clouds...</p>
+    </div>
   </ng-template>
 </div>
