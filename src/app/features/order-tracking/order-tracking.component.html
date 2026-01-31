@@ -1,0 +1,44 @@
+<div class="tracking-wrapper">
+  <h2>Order Tracking #{{ orderId }}</h2>
+
+  <div class="status-card" *ngIf="fulfillmentData(); else loading">
+    <div class="progress-track">
+      <div class="step" [class.active]="true">
+        <span class="dot"></span>
+        <p>Order Placed</p>
+      </div>
+      <div class="step" [class.active]="fulfillmentData().status !== 'CREATED'">
+        <span class="dot"></span>
+        <p>Processed</p>
+      </div>
+      <div class="step" [class.active]="fulfillmentData().status === 'SHIPPED'">
+        <span class="dot"></span>
+        <p>Shipped</p>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="details-section" *ngIf="fulfillmentData().status === 'SHIPPED'; else processingMsg">
+      <div class="info-row">
+        <span>Carrier:</span>
+        <strong>{{ fulfillmentData().carrier }}</strong>
+      </div>
+      <div class="info-row">
+        <span>Tracking Number:</span>
+        <strong>{{ fulfillmentData().tracking_no }}</strong>
+      </div>
+      <a [href]="fulfillmentData().tracking_url" target="_blank" class="track-link">
+        Track on Official Website
+      </a>
+    </div>
+
+    <ng-template #processingMsg>
+      <p class="wait-msg">Your order is being prepared by our supplier. Please check back soon!</p>
+    </ng-template>
+  </div>
+
+  <ng-template #loading>
+    <div class="loader">Fetching tracking details...</div>
+  </ng-template>
+</div>

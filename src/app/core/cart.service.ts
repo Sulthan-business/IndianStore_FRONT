@@ -63,4 +63,7 @@ addToCart(productId: number, quantity: number = 1): Observable<any> {
       })
     );
   }
+  clearLocalCart() {
+  this.cartItemsSignal.set([]); // സിഗ്നൽ ശൂന്യമാക്കുന്നു
+}
 }

@@ -31,25 +31,41 @@ export class ProductDetailsComponent implements OnInit {
       });
     }
   }
-  handleAddToCart() {
-    const currentProduct = this.product();
-    if (currentProduct) {
-      this.cartService.addToCart(currentProduct.id).subscribe({
-        next: () => {
-          // Navigate to the cart page immediately after success
-          this.router.navigate(['/cart']); 
-        },
-        error: (err) => console.error('Error adding to cart:', err)
-      });
-    }
-  }
-  
-  buyNow() {
+  // product-details.component.ts
+
+handleAddToCart() {
   const currentProduct = this.product();
   if (currentProduct) {
     this.cartService.addToCart(currentProduct.id).subscribe({
-      next: () => this.router.navigate(['/checkout']),
-      error: (err) => console.error('Error in Buy Now:', err)
+      next: () => {
+        // Option 1: Navigate to cart (Your current setup)
+        // this.router.navigate(['/cart']); 
+
+        // Option 2: Stay on page but show success (Better UX)
+        // alert(`${currentProduct.name} added to cart!`);
+      },
+      error: (err) => {
+        console.error('Error adding to cart:', err);
+        alert('Could not add to cart. Please try again.');
+      }
     });
   }
+}
+  buyNow() {
+  const p = this.product();
+  if (p) {
+    // Send data via 'state' - no database hit yet!
+    this.router.navigate(['/checkout'], { 
+      state: { 
+        directBuyItem: { 
+          product_id: p.id, 
+          product_name: p.name, 
+          price: p.price, 
+          quantity: 1 
+        } 
+      } 
+    });
+  }
+
+
 }}

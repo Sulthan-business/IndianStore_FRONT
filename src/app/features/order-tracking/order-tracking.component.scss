@@ -1,0 +1,36 @@
+.progress-track {
+  display: flex;
+  justify-content: space-between;
+  margin: 40px 0;
+  
+  .step {
+    text-align: center;
+    flex: 1;
+    position: relative;
+    color: #ccc;
+
+    &.active {
+      color: #2ecc71;
+      .dot { background: #2ecc71; }
+    }
+
+    .dot {
+      display: block;
+      width: 15px;
+      height: 15px;
+      background: #ccc;
+      border-radius: 50%;
+      margin: 0 auto 10px;
+    }
+  }
+}
+
+.track-link {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background: #3498db;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
