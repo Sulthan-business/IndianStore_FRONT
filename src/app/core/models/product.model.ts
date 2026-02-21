@@ -4,8 +4,17 @@ export interface Product {
   price: string;
   stock: number;
   cod_allowed: boolean;
+  image: string;      // Main image
+  images: ProductImage[]; // Multi-image array
+  description: string;
+  is_trending: boolean;
+  is_common_dropship: boolean;
+  category?: number;      // Category ID
+  category_name?: string;
+}
+export interface ProductImage {
+  id: number;
   image: string;
-  description: string; // Now required for the details page
 }
 export interface ProductResponse {
   count: number;

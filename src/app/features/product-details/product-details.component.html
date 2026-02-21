@@ -1,38 +1,51 @@
 @if (product()) {
-  <div class="page-wrapper">
-    <div class="details-container">
-      
-      <div class="image-section">
-        <div class="image-card">
-          <img [src]="product()?.image ? product()?.image : 'assets/images/placeholder.png'" 
-               [alt]="product()?.name">
-        </div>
+<div class="page-wrapper">
+  <div class="details-container">
+    
+    <div class="image-section">
+      <div class="main-image-card" (click)="nextImage()">
+        <img [src]="selectedImage() || product()?.image" [alt]="product()?.name">
       </div>
 
-      <div class="info-section">
-        <nav class="breadcrumb">
-          <a routerLink="/products">Products</a> / <span>{{ product()?.name }}</span>
-        </nav>
-
-        <h1 class="product-title">{{ product()?.name }}</h1>
-        
-        <div class="price-tag">
-          <span class="amount">{{ product()?.price | currency:'INR' }}</span>
-          @if (product()?.cod_allowed) {
-            <span class="cod-badge">COD Available</span>
-          }
+      <div class="thumbnail-row">
+        <div class="t-thumb" (click)="setPreviewImage(product()!.image)" [class.active]="selectedImage() === product()?.image">
+          <img [src]="product()?.image" alt="">
         </div>
-
-        <div class="description-box">
-          <h3>Technical Description</h3>
-          <p>{{ product()?.description }}</p>
-        </div>
-
-      <div class="action-area">
-  <button class="add-to-cart" (click)="handleAddToCart()">Add to Cart</button>
-  <button class="buy-now" (click)="buyNow()">Buy Now</button>
-</div>
+        @for (img of product()?.images; track img.id) {
+          <div class="t-thumb" (click)="setPreviewImage(img.image)" [class.active]="selectedImage() === img.image">
+            <img [src]="img.image" alt="">
+          </div>
+        }
       </div>
     </div>
+
+    <div class="info-section">
+      <h1 class="product-title">{{ product()?.name }}</h1>
+      
+      <div class="price-box">
+        <span class="price-val">₹{{ product()?.price }}</span>
+        @if (product()?.cod_allowed) {
+          <span class="cod-tag">COD Available</span>
+        }
+      </div>
+
+      
+
+      <div class="collapsible-desc">
+        <div class="desc-header" (click)="toggleDesc()">
+          <h3>Technical Description</h3>
+          <span class="arrow" [class.open]="isDescOpen()">▼</span>
+        </div>
+        <div class="desc-body" [class.expanded]="isDescOpen()">
+          <p>{{ product()?.description }}</p>
+        </div>
+        <div class="action-buttons">
+        <button class="cart-btn" (click)="handleAddToCart()">Add to Cart</button>
+        <button class="buy-btn" (click)="buyNow()">Buy Now</button>
+      </div>
+      </div>
+    </div>
+
   </div>
+</div>
 }

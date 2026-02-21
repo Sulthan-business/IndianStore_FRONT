@@ -1,6 +1,7 @@
 import { Component, OnInit, inject, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ProductDataService } from '../../core/product-data.service';
 import { Product } from 'src/app/core/models/product.model';
 import { CartService } from 'src/app/core/cart.service';
@@ -17,12 +18,21 @@ import { CartService } from 'src/app/core/cart.service';
 export class ProductCatalogComponent implements OnInit {
   protected productService = inject(ProductDataService);
   private cartService = inject(CartService); // <--- Add this!
-
+private route = inject(ActivatedRoute);
   allProducts = this.productService.products;
   isLoading = this.productService.loading;
 
   ngOnInit(): void {
-    this.productService.getProducts().subscribe();
+    this.route.queryParams.subscribe(params => {
+      const category = params['category'];
+      const trending = params['trending'] === 'true';
+      const dropship = params['dropship'] === 'true';
+    this.productService.getProducts({ 
+        category, 
+        trending, 
+        dropship 
+      }).subscribe();
+    });
   }
 
   addToCart(product: Product) {

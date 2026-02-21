@@ -1,0 +1,36 @@
+<div class="search-page-container">
+  <div class="search-header">
+    <div class="search-input-wrapper">
+      <span class="material-symbols-rounded">search</span>
+      <input type="text" 
+             placeholder="Search for baby gear or home essentials..." 
+             (input)="onSearch($event)">
+    </div>
+  </div>
+
+ <div class="category-chips">
+  <button (click)="filterByCategory('')" [class.active]="currentCategory() === ''">All</button>
+  <button (click)="filterByCategory('Baby')" [class.active]="currentCategory() === 'Baby'">Baby Care</button>
+  <button (click)="filterByCategory('Lifestyle')" [class.active]="currentCategory() === 'Lifestyle'">Lifestyle</button>
+</div>
+
+  <div class="results-grid">
+    @for (product of filteredProducts(); track product.id) {
+      <div class="result-card" [routerLink]="['/products', product.id]">
+        <div class="img-box">
+          <img [src]="product.image" [alt]="product.name">
+        </div>
+        <div class="info">
+          <h4>{{ product.name }}</h4>
+          <span class="price">₹{{ product.price }}</span>
+          <span class="cat-badge">{{ product.category_name }}</span>
+        </div>
+      </div>
+    } @empty {
+      <div class="no-results">
+        <span class="material-symbols-rounded">sentiment_dissatisfied</span>
+        <p>No products found. Try searching for "Mixer" or "Diapers".</p>
+      </div>
+    }
+  </div>
+</div>

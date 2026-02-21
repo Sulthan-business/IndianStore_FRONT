@@ -38,6 +38,10 @@ export const routes: Routes = [
     canActivate: [authGuard], 
     loadComponent: () => import('./features/profile/profile.component').then(m => m.ProfileComponent) 
   },
+   { 
+    path: 'search', // 'Search' എന്നതിന് പകരം 'search' എന്ന് മാറ്റുക
+    loadComponent: () => import('./features/search/search.component').then(m => m.SearchComponent) 
+  },
 
   // Authentication
   { 

@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
   styleUrl: './cart.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush // Extra speed boost
 })
+
 export class CartComponent implements OnInit {
   protected cartService = inject(CartService);
   private router = inject(Router);

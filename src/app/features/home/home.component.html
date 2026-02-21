@@ -1,20 +1,56 @@
-<div class="hero-container">
-  <div class="blob-bg"></div>
-
-  <div class="hero-content">
-    <span class="status-pill">✨ Handpicked with Love</span>
-    <h1>Everything Your <br> <span class="highlight">Little One</span> Needs</h1>
-    <p>From pregnancy essentials to newborn comfort, we support your motherhood journey with premium, safe products.</p>
-    
-    <div class="cta-group">
-      <button class="btn-round btn-primary" routerLink="/products">Shop Newborn</button>
-      <button class="btn-round btn-outline" routerLink="/products">For Mommy</button>
+<div class="main-container">
+  <section class="hero-section">
+    <div class="hero-flex">
+      <div class="hero-text">
+        <span class="badge">New Collection 2026</span>
+        <h1>Modern Essentials for <br> <span class="accent">Home & Baby</span></h1>
+        <p>Curated lifestyle products delivered to your door.</p>
+        <div class="hero-btns">
+          <button class="btn-main" [routerLink]="['/products']">Shop Now</button>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <img src="assets/images/hero-main.jpg" alt="OneBab Banner" class="main-banner">
+      </div>
     </div>
-  </div>
+  </section>
 
-  <div class="hero-visual">
-    <div class="image-wrapper">
-      <!-- <img src="assets/images/balya-logo.png" alt="Balya Bear"> -->
+  <section class="category-tiles">
+    <div class="tile-card baby" [routerLink]="['/products']" [queryParams]="{category: 'Baby'}">
+      <div class="tile-info">
+        <h3>Baby Care</h3>
+        <span>Explore →</span>
+      </div>
     </div>
-  </div>
+    <div class="tile-card lifestyle" [routerLink]="['/products']" [queryParams]="{category: 'Lifestyle'}">
+      <div class="tile-info">
+        <h3>Lifestyle</h3>
+        <span>Explore →</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="product-section">
+    <div class="section-top">
+      <h2>Trending Now</h2>
+      <a routerLink="/products" class="view-all">See All</a>
+    </div>
+
+    <div class="product-grid">
+      @for (product of trendingProducts(); track product.id) {
+        <div class="product-card" [routerLink]="['/products', product.id]">
+          <div class="product-img">
+            <img [src]="product.image" [alt]="product.name">
+          </div>
+          <div class="product-meta">
+            <h4 class="product-title">{{ product.name }}</h4>
+            <div class="product-price-row">
+              <span class="price">₹{{ product.price }}</span>
+              <button class="add-cart-mini">+</button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </section>
 </div>

@@ -1,70 +1,85 @@
-<header class="main-nav">
-  <div class="nav-container">
+<header class="top-header">
+  <div class="header-container">
     <div class="logo-area" routerLink="/home">
-      <img src="assets/images/balya-logo.png" alt="Balya World" class="logo-img">
-      <span class="brand-name">Balya <span class="accent">World</span></span>
+      <svg width="28" height="28" viewBox="0 0 100 100">
+        <path d="M50 5L90 25V75L50 95L10 75V25L50 5Z" fill="url(#logoGrad)" />
+        <g fill="white"><rect x="30" y="30" width="8" height="40" /><path d="M42 30H55C61 30 64 33 64 38C64 43 61 46 55 46H42V30Z" /><path d="M42 50H58C63 50 66 53 66 60C66 67 63 70 58 70H42V50Z" /></g>
+        <defs><linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#9c27b0" /><stop offset="100%" style="stop-color:#e91e63" /></linearGradient></defs>
+      </svg>
+      <span class="brand-name">One<span class="accent">Bab</span></span>
     </div>
 
-    <nav class="links">
-      <a routerLink="/home" routerLinkActive="active-link">Home</a>
-      <a routerLink="/products" routerLinkActive="active-link">Shop</a>
-      <a routerLink="/search" routerLinkActive="active-link">Search</a>
+    <nav class="desktop-nav">
+      <a routerLink="/home" routerLinkActive="active">Home</a>
+      <a [routerLink]="['/products']" [queryParams]="{category: 'Baby'}" routerLinkActive="active">Baby Care</a>
+      <a [routerLink]="['/products']" [queryParams]="{category: 'Lifestyle'}" routerLinkActive="active">Lifestyle</a>
+      <a routerLink="/search" routerLinkActive="active">Search</a>
     </nav>
 
-    <div class="action-icons">
-      @if (authService.isLoggedIn()) {
-        <a routerLink="/my-orders" class="icon-btn" title="My Orders">
-          <span class="icon">📦</span>
-        </a>
-        <a routerLink="/profile" class="icon-btn" title="My Profile">
-          <span class="icon">👤</span>
-        </a>
-        <button (click)="logout()" class="logout-minimal-btn" title="Logout">
-          <span class="icon">🚪</span>
-        </button>
-      } @else {
-        <a routerLink="/login" class="login-link">Login</a>
-      }
-
+    <div class="header-actions">
+      <div class="desktop-auth" *ngIf="authService.isLoggedIn()">
+        <a routerLink="/profile" class="nav-icon"><span class="material-symbols-rounded">person</span></a>
+        <button (click)="logout()" class="logout-icon"><span class="material-symbols-rounded">logout</span></button>
+      </div>
+      <div class="desktop-auth" *ngIf="!authService.isLoggedIn()">
+        <a routerLink="/login" class="login-pill">Login</a>
+      </div>
       <a routerLink="/cart" class="cart-btn">
-        <span class="icon">🛒</span>
-        <span class="badge">{{ cartService.totalItems() }}</span>
+        <span class="material-symbols-rounded">shopping_bag</span>
+        <span class="badge" *if="cartService.totalItems() > 0">{{ cartService.totalItems() }}</span>
       </a>
     </div>
   </div>
 </header>
-<main class="page-wrapper">
-  <router-outlet></router-outlet>
 
+<main class="page-content">
+  <router-outlet></router-outlet>
 </main>
 
-<footer class="main-footer">
-  <div class="footer-content">
-    <div class="footer-section">
-      <h3>Balya World</h3>
-      <p>Nurturing the journey of motherhood with safe and gentle products.</p>
-    </div>
+<nav class="mobile-bottom-nav">
+  <a routerLink="/home" routerLinkActive="active" class="nav-item">
+    <span class="material-symbols-rounded">home</span>
+    <span>Home</span>
+  </a>
+  <a [routerLink]="['/products']" routerLinkActive="active" class="nav-item">
+    <span class="material-symbols-rounded">dashboard</span>
+    <span>Shop</span>
+  </a>
+  <a routerLink="/search" routerLinkActive="active" class="nav-item">
+    <span class="material-symbols-rounded">search</span>
+    <span>Search</span>
+  </a>
+  <a [routerLink]="authService.isLoggedIn() ? '/profile' : '/login'" routerLinkActive="active" class="nav-item">
+    <span class="material-symbols-rounded">{{ authService.isLoggedIn() ? 'person' : 'login' }}</span>
+    <span>{{ authService.isLoggedIn() ? 'Profile' : 'Login' }}</span>
+  </a>
+</nav>
 
-    <div class="footer-section">
-      <h3>Quick Links</h3>
-      <ul>
-        <li><a routerLink="/products">New Arrivals</a></li>
-        @if (authService.isLoggedIn()) {
-          <li><a routerLink="/my-orders">Track My Orders</a></li>
-        }
-        <li><a [routerLink]="authService.isLoggedIn() ? '/profile' : '/login'">My Account</a></li>
-        <li><a routerLink="/checkout">Shipping Info</a></li>
-      </ul>
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <h3>One<span>Bab</span></h3>
+      <p>Premium care for Mommy, Baby & Everyday Lifestyle essentials.</p>
+      <div class="social-mini">
+        <span class="material-symbols-rounded">public</span>
+        <span class="material-symbols-rounded">mail</span>
+      </div>
     </div>
     
-    <div class="footer-section">
-      <h3>Contact Us</h3>
-      <p>Email: supportalyaworld.com</p>
-      <p>Kerala, India</p>
+    <div class="footer-links-grid">
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <a [routerLink]="['/products']" [queryParams]="{category: 'Baby'}">Baby Care</a>
+        <a [routerLink]="['/products']" [queryParams]="{category: 'Lifestyle'}">Lifestyle</a>
+      </div>
+      <div class="footer-col">
+        <h4>Support</h4>
+        <a routerLink="/tracking">Track Order</a>
+        <a routerLink="/contact">Contact Us</a>
+      </div>
     </div>
   </div>
-
-  <div class="footer-bottom">
-    <p>&copy; 2026 Balya World. Designed for Mommies & Babies.</p>
+  <div class="bottom-bar">
+    &copy; 2026 OneBab | Made with ❤️ in Kerala
   </div>
 </footer>
